@@ -7,7 +7,6 @@ import {
   Document,
   StyleSheet,
   Font,
-  PDFViewer,
   PDFDownloadLink,
 } from "@react-pdf/renderer";
 
@@ -271,29 +270,4 @@ const PDF = ({ studentName, projectName, subject, teacher, year }) => (
   </Document>
 );
 
-function Link() {
-  const studentName = "John Doe";
-  const projectName = "MATHEMATICS PROJECT";
-  const subject = "Mathematics";
-  const teacher = "Steve Smith";
-  const year = 2025;
-
-  return (
-    <PDFDownloadLink
-      document={
-        <PDF
-          studentName={studentName}
-          projectName={projectName}
-          subject={subject}
-          teacher={teacher}
-          year={year}
-        />
-      }
-      fileName={`${subject} Project Front Pages`}
-    >
-      Download PDF
-    </PDFDownloadLink>
-  );
-}
-
-export default Link;
+export default PDF;
