@@ -126,7 +126,7 @@ const styles = StyleSheet.create({
 });
 
 // Create Document Component
-const PDF = ({ studentName, projectName, subject, teacher, year }) => (
+const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
@@ -134,7 +134,9 @@ const PDF = ({ studentName, projectName, subject, teacher, year }) => (
         <Text style={styles.largeSpaced}>PROJECT REPORT</Text>
         <Text style={styles.centerSpaced}>Submitted by</Text>
         <Text style={styles.centerBold}>{studentName.toUpperCase()}</Text>
-        <Text style={[styles.centerBold, { marginRight: 80 }]}>UID No.:</Text>
+        {grade === "XII" && (
+          <Text style={[styles.centerBold, { marginRight: 80 }]}>UID No.:</Text>
+        )}
         <Text style={styles.center}>to</Text>
         <Text style={styles.center}>
           Council for the Indian School Certificate Examination (CISCE)
@@ -157,10 +159,10 @@ const PDF = ({ studentName, projectName, subject, teacher, year }) => (
         <Text style={styles.largeBoldSpaced}>DECLARATION</Text>
         <Text style={styles.textBlock}>
           I undersigned solemnly declare that the project report "
-          <Text style={styles.textBold}>{projectName}</Text>" is
-          based on my work carried out during the course of our study under the
-          supervision of {teacher}. I assert the statement made and conclusions
-          drawn are an outcome of my research work. I further certify that
+          <Text style={styles.textBold}>{projectName}</Text>" is based on my
+          work carried out during the course of our study under the supervision
+          of {teacher}. I assert the statement made and conclusions drawn are an
+          outcome of my research work. I further certify that
         </Text>
         <View style={styles.list}>
           <View style={styles.listItem}>
@@ -204,11 +206,12 @@ const PDF = ({ studentName, projectName, subject, teacher, year }) => (
         <Text style={styles.textBlock}>
           This is to certify that{" "}
           <Text style={styles.textBold}>{studentName.toUpperCase()}</Text>, a
-          student of class XII has successfully completed the research on the
-          project "
-          <Text style={styles.textBold}>{projectName}</Text>"
-          under the guidance of {teacher} during the year {year - 1}-{year} in
-          partial fulfillment of {subject} project conducted by ISC, New Delhi.
+          student of class {grade} has successfully completed the research on
+          the project "<Text style={styles.textBold}>{projectName}</Text>" under
+          the guidance of {teacher} during the year {year - 1}-{year}
+          {grade === "XII" &&
+            ` in partial fulfillment of ${subject} project conducted by ISC, New Delhi`
+          }.
         </Text>
       </View>
       <View

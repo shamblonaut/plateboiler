@@ -41,7 +41,7 @@ form h2 {
 
 .field {
   display: grid;
-  grid-template-columns: auto 50vw;
+  grid-template-columns: auto min(50vw, 300px);
   gap: 16px;
   margin: 16px 0;
   align-items: center;

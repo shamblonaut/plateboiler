@@ -20,6 +20,7 @@ function App() {
   ];
 
   const [student, setStudent] = useState("");
+  const [grade, setGrade] = useState("XII");
   const [project, setProject] = useState("");
   const [subject, setSubject] = useState(subjectsList[0]);
   const [teacher, setTeacher] = useState("");
@@ -85,9 +86,19 @@ function App() {
               />
             </div>
             <div className="field">
+              <label>Class</label>
+              <select
+                value={grade}
+                onChange={(event) => setGrade(event.target.value)}
+                required
+              >
+                <option value="XII" selected={true} >XII</option>
+                <option value="XI">XI</option>
+              </select>
+            </div>
+            <div className="field">
               <label>Subject</label>
               <select
-                type="text"
                 value={subject}
                 onChange={(event) => setSubject(event.target.value)}
                 required
@@ -141,6 +152,7 @@ function App() {
                 document={
                   <PDF
                     studentName={student}
+                    grade={grade}
                     projectName={project}
                     subject={subject}
                     teacher={teacher}
