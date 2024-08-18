@@ -5,14 +5,20 @@ import "./App.css";
 import { useEffect, useState } from "react";
 
 function App() {
-  const subjectsList = ["English", "Physics", "Chemistry", "Mathematics", "Biology", "Computer Science"];
+  const subjectsList = [
+    "English",
+    "Physics",
+    "Chemistry",
+    "Mathematics",
+    "Biology",
+    "Computer Science",
+  ];
 
   const [student, setStudent] = useState("");
   const [project, setProject] = useState("");
   const [subject, setSubject] = useState(subjectsList[0]);
   const [teacher, setTeacher] = useState("");
   const [year, setYear] = useState("2025");
-  
 
   const [teachersList, setTeachersList] = useState(["Steve Smith"]);
   useEffect(() => {
@@ -31,9 +37,9 @@ function App() {
       if (inputField.value === "") {
         isFormFilled = false;
       }
-    })
+    });
     setFormFilled(isFormFilled);
-  }
+  };
 
   return (
     <>
@@ -82,7 +88,9 @@ function App() {
                 required
               >
                 {subjectsList.map((subjectName) => (
-                  <option value={subjectName} key={subjectName}>{subjectName}</option>
+                  <option value={subjectName} key={subjectName}>
+                    {subjectName}
+                  </option>
                 ))}
               </select>
             </div>
@@ -122,30 +130,39 @@ function App() {
               />
             </div>
           </div>
-          {formFilled ?(
+          {formFilled ? (
             <>
               <PDFDownloadLink
-              document={
-                <PDF
-                  studentName={student}
-                  projectName={project}
-                  subject={subject}
-                  teacher={teacher}
-                  year={year}
-                />
-              }
-              fileName={`${subject} Project Front Pages`}
-              style={{ textDecoration: "none" }}
-            >
-              <button className="download" type="button">
-                <img src="/pdf.svg" alt="Download PDF" />
-                <p>Download PDF</p>
-              </button>
-            </PDFDownloadLink>
-            <p className="verify">ⓘ Please verify the details in the PDF carefully</p>
+                document={
+                  <PDF
+                    studentName={student}
+                    projectName={project}
+                    subject={subject}
+                    teacher={teacher}
+                    year={year}
+                  />
+                }
+                fileName={`${subject} Project Front Pages`}
+                style={{ textDecoration: "none" }}
+              >
+                {({ blob, url, loading, error }) =>
+                  loading ? (
+                    <button className="download" type="button">
+                      <p>Loading...</p>
+                    </button>
+                  ) : (
+                    <button className="download" type="button">
+                      <img src="/pdf.svg" alt="Download PDF" />
+                      <p>Download PDF</p>
+                    </button>
+                  )
+                }
+              </PDFDownloadLink>
+              <p className="verify">
+                ⓘ Please verify the details in the PDF carefully
+              </p>
             </>
           ) : null}
-          
         </form>
       </main>
     </>
