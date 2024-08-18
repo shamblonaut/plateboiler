@@ -6,12 +6,17 @@ import { useEffect, useState } from "react";
 
 function App() {
   const subjectsList = [
-    "English",
+    "English Language",
+    "Literature in English",
     "Physics",
     "Chemistry",
     "Mathematics",
     "Biology",
     "Computer Science",
+    "Accounts",
+    "Commerce",
+    "Economics",
+    "Political Science"
   ];
 
   const [student, setStudent] = useState("");
