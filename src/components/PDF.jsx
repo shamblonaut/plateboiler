@@ -12,26 +12,12 @@ import {
 
 Font.registerHyphenationCallback((word) => ["", word, ""]);
 
-// Register a font (you'll need to provide the actual font file)
-Font.register({
-  family: "Times New Roman",
-  fonts: [
-    {
-      src: "/font.ttf",
-    },
-    {
-      src: "/font-bold.ttf",
-      fontWeight: "bold",
-    },
-  ],
-});
-
 // Create styles
 const styles = StyleSheet.create({
   page: {
     margin: "80px",
     backgroundColor: "#FFFFFF",
-    fontFamily: "Times New Roman",
+    fontFamily: "Times-Roman",
   },
   section: {
     maxWidth: 435,
@@ -48,11 +34,13 @@ const styles = StyleSheet.create({
   largeBold: {
     fontSize: 18,
     textAlign: "center",
+    fontFamily: "Times-Bold",
     fontWeight: "bold",
   },
   largeBoldSpaced: {
     fontSize: 18,
     textAlign: "center",
+    fontFamily: "Times-Bold",
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -68,6 +56,7 @@ const styles = StyleSheet.create({
   centerBold: {
     fontSize: 14,
     textAlign: "center",
+    fontFamily: "Times-Bold",
     fontWeight: "bold",
     marginBottom: 20,
   },
@@ -81,6 +70,7 @@ const styles = StyleSheet.create({
   },
   textBold: {
     fontSize: 14,
+    fontFamily: "Times-Bold",
     fontWeight: "bold",
   },
   textRight: {
@@ -90,6 +80,7 @@ const styles = StyleSheet.create({
   textRightBold: {
     fontSize: 14,
     textAlign: "right",
+    fontFamily: "Times-Bold",
     fontWeight: "bold",
     marginTop: 20,
   },
