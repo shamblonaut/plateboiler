@@ -1,7 +1,8 @@
 import { useEffect, useState } from "react";
-import { PDFDownloadLink } from "@react-pdf/renderer";
+import { pdf } from "@react-pdf/renderer";
 
 import PDF from "./PDF";
+
 
 function Form() {
   const subjectsList = [
@@ -85,9 +86,7 @@ function Form() {
             onChange={(event) => setGrade(event.target.value)}
             required
           >
-            <option value="XII" selected={true}>
-              XII
-            </option>
+            <option value="XII">XII</option>
             <option value="XI">XI</option>
           </select>
         </div>
@@ -141,41 +140,57 @@ function Form() {
           />
         </div>
       </div>
-      {formFilled ? (
+      {formFilled && (
         <>
-          <PDFDownloadLink
-            document={
-              <PDF
-                studentName={student}
-                grade={grade}
-                projectName={project}
-                subject={subject}
-                teacher={teacher}
-                year={year}
-              />
-            }
-            fileName={`${subject} Project Front Pages`}
-            style={{ textDecoration: "none" }}
-          >
-            {({ blob, url, loading, error }) =>
-              loading ? (
-                <button className="download" type="button">
-                  <p>Loading...</p>
-                </button>
-              ) : (
-                <button className="download" type="button">
-                  <img src="/pdf.svg" alt="Download PDF" />
-                  <p>Download PDF</p>
-                </button>
-              )
-            }
-          </PDFDownloadLink>
+          <DownloadButton
+            projectInfo={{ student, project, grade, subject, teacher, year }}
+          />
           <p className="verify">
             ⓘ Please verify the details in the PDF carefully
           </p>
         </>
-      ) : null}
+      )}
     </form>
+  );
+}
+
+function DownloadButton({ projectInfo }) {
+  return (
+    <button
+      className="download"
+      type="button"
+      onClick={async () => {
+        const blob = await pdf(
+          <PDF
+            studentName={projectInfo.student}
+            grade={projectInfo.grade}
+            projectName={projectInfo.project}
+            subject={projectInfo.subject}
+            teacher={projectInfo.teacher}
+            year={projectInfo.year}
+          />
+        ).toBlob();
+
+        const link = document.createElement("a");
+        link.href = URL.createObjectURL(blob);
+        link.download = `${projectInfo.subject} Project Front Pages`;
+        link.style = {
+          display: "none",
+        };
+        document.body.appendChild(link);
+        link.dispatchEvent(
+          new MouseEvent("click", {
+            bubbles: true,
+            cancelable: true,
+            view: window,
+          })
+        );
+        document.body.removeChild(link);
+      }}
+    >
+      <img src="/pdf.svg" alt="Download PDF" />
+      <p>Download PDF</p>
+    </button>
   );
 }
 

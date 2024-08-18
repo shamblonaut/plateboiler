@@ -10,7 +10,7 @@ import {
   PDFDownloadLink,
 } from "@react-pdf/renderer";
 
-Font.registerHyphenationCallback((word) => [word]);
+Font.registerHyphenationCallback((word) => ["", word, ""]);
 
 // Register a font (you'll need to provide the actual font file)
 Font.register({
@@ -161,8 +161,11 @@ const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
           I undersigned solemnly declare that the project report "
           <Text style={styles.textBold}>{projectName}</Text>" is based on my
           work carried out during the course of our study under the supervision
-          of {teacher}. I assert the statement made and conclusions drawn are an
-          outcome of my research work. I further certify that
+          of {teacher}.
+        </Text>
+        <Text style={styles.textBlock}>
+          I assert the statement made and conclusions drawn are an outcome of my
+          research work. I further certify that
         </Text>
         <View style={styles.list}>
           <View style={styles.listItem}>
@@ -210,8 +213,8 @@ const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
           the project "<Text style={styles.textBold}>{projectName}</Text>" under
           the guidance of {teacher} during the year {year - 1}-{year}
           {grade === "XII" &&
-            ` in partial fulfillment of ${subject} project conducted by ISC, New Delhi`
-          }.
+            ` in partial fulfillment of ${subject} project conducted by ISC, New Delhi`}
+          .
         </Text>
       </View>
       <View
