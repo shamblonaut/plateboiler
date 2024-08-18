@@ -2,14 +2,38 @@ import PDF from "./PDF";
 import { PDFDownloadLink } from "@react-pdf/renderer";
 
 import "./App.css";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 
 function App() {
-  const [student, setStudent] = useState("John Doe");
-  const [project, setProject] = useState("MATHEMATICS PROJECT");
-  const [subject, setSubject] = useState("Mathematics");
-  const [teacher, setTeacher] = useState("Steve Smith");
+  const subjectsList = ["English", "Physics", "Chemistry", "Mathematics", "Biology", "Computer Science"];
+
+  const [student, setStudent] = useState("");
+  const [project, setProject] = useState("");
+  const [subject, setSubject] = useState(subjectsList[0]);
+  const [teacher, setTeacher] = useState("");
   const [year, setYear] = useState("2025");
+  
+
+  const [teachersList, setTeachersList] = useState(["Steve Smith"]);
+  useEffect(() => {
+    if (import.meta.env.VITE_TEACHERS) {
+      setTeachersList(import.meta.env.VITE_TEACHERS.split(","));
+    } else {
+      console.log("No environment variable VITE_TEACHERS found");
+    }
+  }, []);
+
+  const [formFilled, setFormFilled] = useState(false);
+  const updateFormFilled = () => {
+    const inputFields = document.querySelectorAll(".input");
+    let isFormFilled = true;
+    inputFields.forEach((inputField) => {
+      if (inputField.value === "") {
+        isFormFilled = false;
+      }
+    })
+    setFormFilled(isFormFilled);
+  }
 
   return (
     <>
@@ -24,67 +48,104 @@ function App() {
             <div className="field">
               <label>Student</label>
               <input
+                className="input"
                 type="text"
                 value={student}
-                onChange={(event) => setStudent(event.target.value)}
+                placeholder="Your name"
+                onChange={(event) => {
+                  setStudent(event.target.value);
+                  updateFormFilled();
+                }}
                 required
               />
             </div>
             <div className="field">
               <label>Project</label>
               <input
+                className="input"
                 type="text"
                 value={project}
-                onChange={(event) => setProject(event.target.value)}
+                placeholder="Your project's name"
+                onChange={(event) => {
+                  setProject(event.target.value);
+                  updateFormFilled();
+                }}
                 required
               />
             </div>
             <div className="field">
               <label>Subject</label>
-              <input
+              <select
                 type="text"
                 value={subject}
                 onChange={(event) => setSubject(event.target.value)}
                 required
-              />
+              >
+                {subjectsList.map((subjectName) => (
+                  <option value={subjectName} key={subjectName}>{subjectName}</option>
+                ))}
+              </select>
             </div>
             <div className="field">
               <label>Teacher</label>
               <input
+                className="input"
                 type="text"
                 value={teacher}
-                onChange={(event) => setTeacher(event.target.value)}
+                placeholder="Subject teacher's name"
+                list="teacher-names"
+                onChange={(event) => {
+                  setTeacher(event.target.value);
+                  updateFormFilled();
+                }}
                 required
               />
+              <datalist id="teacher-names">
+                {teachersList.map((teacherName) => (
+                  <option value={teacherName} key={teacherName}>
+                    {teacherName}
+                  </option>
+                ))}
+              </datalist>
             </div>
             <div className="field">
               <label>Year</label>
               <input
+                className="input"
                 type="number"
                 value={year}
-                onChange={(event) => setYear(event.target.value)}
+                onChange={(event) => {
+                  setYear(event.target.value);
+                  updateFormFilled();
+                }}
                 required
               />
             </div>
           </div>
-          <PDFDownloadLink
-            document={
-              <PDF
-                studentName={student}
-                projectName={project}
-                subject={subject}
-                teacher={teacher}
-                year={year}
-              />
-            }
-            fileName={`${subject} Project Front Pages`}
-            style={{ textDecoration: "none" }}
-          >
-            <button className="download">
-              <img src="/pdf.svg" alt="Download PDF" />
-              <p>Download PDF</p>
-            </button>
-          </PDFDownloadLink>
+          {formFilled ?(
+            <>
+              <PDFDownloadLink
+              document={
+                <PDF
+                  studentName={student}
+                  projectName={project}
+                  subject={subject}
+                  teacher={teacher}
+                  year={year}
+                />
+              }
+              fileName={`${subject} Project Front Pages`}
+              style={{ textDecoration: "none" }}
+            >
+              <button className="download" type="button">
+                <img src="/pdf.svg" alt="Download PDF" />
+                <p>Download PDF</p>
+              </button>
+            </PDFDownloadLink>
+            <p className="verify">ⓘ Please verify the details in the PDF carefully</p>
+            </>
+          ) : null}
+          
         </form>
       </main>
     </>

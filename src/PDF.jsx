@@ -157,7 +157,7 @@ const PDF = ({ studentName, projectName, subject, teacher, year }) => (
         <Text style={styles.largeBoldSpaced}>DECLARATION</Text>
         <Text style={styles.textBlock}>
           I undersigned solemnly declare that the project report "
-          <Text style={styles.textBold}>{projectName.toUpperCase()}</Text>" is
+          <Text style={styles.textBold}>{projectName}</Text>" is
           based on my work carried out during the course of our study under the
           supervision of {teacher}. I assert the statement made and conclusions
           drawn are an outcome of my research work. I further certify that
@@ -205,9 +205,10 @@ const PDF = ({ studentName, projectName, subject, teacher, year }) => (
           This is to certify that{" "}
           <Text style={styles.textBold}>{studentName.toUpperCase()}</Text>, a
           student of class XII has successfully completed the research on the
-          project "{projectName}" under the guidance of {teacher} during the
-          year {year - 1}-{year} in partial fulfillment of {subject} project
-          conducted by ISC, New Delhi.
+          project "
+          <Text style={styles.textBold}>{projectName}</Text>"
+          under the guidance of {teacher} during the year {year - 1}-{year} in
+          partial fulfillment of {subject} project conducted by ISC, New Delhi.
         </Text>
       </View>
       <View
