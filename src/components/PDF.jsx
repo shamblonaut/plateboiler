@@ -248,7 +248,8 @@ const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
           Section) for her valuable suggestions and support.
         </Text>
         <Text style={styles.textBlock}>
-          I am indebted to our project coordinator{" "}
+          I am indebted to our project coordinator
+          {teacher.toLowerCase().includes("and") && "s"}{" "}
           <Text style={styles.textBold}>{teacher}</Text>, Secondary Level
           Section, for their timely guidance and support throughout this work.
         </Text>
