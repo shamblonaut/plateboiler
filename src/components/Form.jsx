@@ -3,8 +3,8 @@ import { pdf } from "@react-pdf/renderer";
 
 import PDF from "./PDF";
 
-
 function Form() {
+  // Practical Records must be marked as "<subject> (Practical)"
   const subjectsList = [
     "English Language",
     "Literature in English",
@@ -13,6 +13,7 @@ function Form() {
     "Mathematics",
     "Biology",
     "Computer Science",
+    "Computer Science (Practical)",
     "Accounts",
     "Commerce",
     "Economics",
@@ -26,6 +27,8 @@ function Form() {
   const [teacher, setTeacher] = useState("");
   const [year, setYear] = useState("2025");
 
+  const [projectNameEnabled, setProjectNameEnabled] = useState(true);
+
   const [teachersList, setTeachersList] = useState(["Steve Smith"]);
   useEffect(() => {
     if (import.meta.env.VITE_TEACHERS) {
@@ -36,15 +39,15 @@ function Form() {
   }, []);
 
   const [formFilled, setFormFilled] = useState(false);
-  const updateFormFilled = () => {
-    const inputFields = document.querySelectorAll(".input");
+  const checkFormFilled = () => {
+    const inputFields = document.querySelectorAll(".input:required");
     let isFormFilled = true;
     inputFields.forEach((inputField) => {
       if (inputField.value === "") {
         isFormFilled = false;
       }
     });
-    setFormFilled(isFormFilled);
+    return isFormFilled;
   };
 
   return (
@@ -55,26 +58,13 @@ function Form() {
           <label>Student</label>
           <input
             className="input"
+            id="student"
             type="text"
             value={student}
             placeholder="Your name"
             onChange={(event) => {
               setStudent(event.target.value);
-              updateFormFilled();
-            }}
-            required
-          />
-        </div>
-        <div className="field">
-          <label>Project</label>
-          <input
-            className="input"
-            type="text"
-            value={project}
-            placeholder="Your project's name"
-            onChange={(event) => {
-              setProject(event.target.value);
-              updateFormFilled();
+              setFormFilled(checkFormFilled());
             }}
             required
           />
@@ -82,6 +72,7 @@ function Form() {
         <div className="field">
           <label>Class</label>
           <select
+            id="grade"
             value={grade}
             onChange={(event) => setGrade(event.target.value)}
             required
@@ -93,8 +84,15 @@ function Form() {
         <div className="field">
           <label>Subject</label>
           <select
+            id="subject"
             value={subject}
-            onChange={(event) => setSubject(event.target.value)}
+            onChange={(event) => {
+              setSubject(event.target.value);
+              setProjectNameEnabled(
+                !event.target.value.includes(" (Practical)"),
+              );
+              setFormFilled(checkFormFilled());
+            }}
             required
           >
             {subjectsList.map((subjectName) => (
@@ -104,17 +102,35 @@ function Form() {
             ))}
           </select>
         </div>
+        {projectNameEnabled && (
+          <div className="field">
+            <label>Project</label>
+            <input
+              className="input"
+              id="project"
+              type="text"
+              value={project}
+              placeholder="Your project's name"
+              onChange={(event) => {
+                setProject(event.target.value);
+                setFormFilled(checkFormFilled());
+              }}
+              required
+            />
+          </div>
+        )}
         <div className="field">
           <label>Teacher</label>
           <input
             className="input"
+            id="teacher"
             type="text"
             value={teacher}
             placeholder="Subject teacher's name"
             list="teacher-names"
             onChange={(event) => {
               setTeacher(event.target.value);
-              updateFormFilled();
+              setFormFilled(checkFormFilled());
             }}
             required
           />
@@ -130,11 +146,12 @@ function Form() {
           <label>Year</label>
           <input
             className="input"
+            id="year"
             type="number"
             value={year}
             onChange={(event) => {
               setYear(event.target.value);
-              updateFormFilled();
+              setFormFilled(checkFormFilled());
             }}
             required
           />
@@ -168,7 +185,7 @@ function DownloadButton({ projectInfo }) {
             subject={projectInfo.subject}
             teacher={projectInfo.teacher}
             year={projectInfo.year}
-          />
+          />,
         ).toBlob();
 
         const link = document.createElement("a");
@@ -183,7 +200,7 @@ function DownloadButton({ projectInfo }) {
             bubbles: true,
             cancelable: true,
             view: window,
-          })
+          }),
         );
         document.body.removeChild(link);
       }}

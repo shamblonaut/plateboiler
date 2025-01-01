@@ -121,8 +121,16 @@ const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
   <Document>
     <Page size="A4" style={styles.page}>
       <View style={styles.section}>
-        <Text style={styles.largeBoldSpaced}>{projectName}</Text>
-        <Text style={styles.largeSpaced}>PROJECT REPORT</Text>
+        <Text style={styles.largeBoldSpaced}>
+          {subject.includes(" (Practical)")
+            ? subject.replace(" (Practical)", "")
+            : projectName}
+        </Text>
+        <Text style={styles.largeSpaced}>
+          {subject.includes(" (Practical)")
+            ? "PRACTICAL RECORD"
+            : "PROJECT REPORT"}
+        </Text>
         <Text style={styles.centerSpaced}>Submitted by</Text>
         <Text style={styles.centerBold}>{studentName.toUpperCase()}</Text>
         {grade === "XII" && (
@@ -149,10 +157,14 @@ const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
       <View style={styles.section}>
         <Text style={styles.largeBoldSpaced}>DECLARATION</Text>
         <Text style={styles.textBlock}>
-          I undersigned solemnly declare that the project report "
-          <Text style={styles.textBold}>{projectName}</Text>" is based on my
-          work carried out during the course of our study under the supervision
-          of {teacher}.
+          I undersigned solemnly declare that the{" "}
+          {subject.includes(" (Practical)") && "practical record"}
+          {!subject.includes(" (Practical)") && 'project report "'}
+          {!subject.includes(" (Practical)") && (
+            <Text style={styles.textBold}>{projectName}</Text>
+          )}
+          {!subject.includes(" (Practical)") && '"'} is based on my work carried
+          out during the course of our study under the supervision of {teacher}.
         </Text>
         <Text style={styles.textBlock}>
           I assert the statement made and conclusions drawn are an outcome of my
@@ -162,8 +174,10 @@ const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
           <View style={styles.listItem}>
             <Text style={styles.listNumber}>1.</Text>
             <Text style={styles.text}>
-              The work contained in the report is original and has been done by
-              me under the general supervision of my supervisor.
+              The work contained in the{" "}
+              {subject.includes(" (Practical)") ? "report" : "record"} is
+              original and has been done by me under the general supervision of
+              my supervisor.
             </Text>
           </View>
           <View style={styles.listItem}>
@@ -177,7 +191,7 @@ const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
             <Text style={styles.listNumber}>3.</Text>
             <Text style={styles.text}>
               We have followed the guidelines forwarded by the board in writing
-              the report.
+              the {subject.includes(" (Practical)") ? "report" : "record"}.
             </Text>
           </View>
         </View>
@@ -200,11 +214,20 @@ const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
         <Text style={styles.textBlock}>
           This is to certify that{" "}
           <Text style={styles.textBold}>{studentName.toUpperCase()}</Text>, a
-          student of class {grade} has successfully completed the research on
-          the project "<Text style={styles.textBold}>{projectName}</Text>" under
-          the guidance of {teacher} during the year {year - 1}-{year}
+          student of class {grade} has successfully completed the{" "}
+          {subject.includes(" (Practical)") && "practical record work"}
+          {!subject.includes(" (Practical)") && 'research on the project "'}
+          {!subject.includes(" (Practical)") && (
+            <Text style={styles.textBold}>{projectName}</Text>
+          )}
+          {!subject.includes(" (Practical)") && '"'} under the guidance of{" "}
+          {teacher} during the year {year - 1}-{year}
           {grade === "XII" &&
-            ` in partial fulfillment of ${subject} project conducted by ISC, New Delhi`}
+            ` in partial fulfillment of ` +
+              (subject.includes(" (Practical)")
+                ? `${subject.replace(" (Practical)", "")} practical examination`
+                : `${subject} project`) +
+              ` conducted by ISC, New Delhi`}
           .
         </Text>
       </View>
@@ -233,11 +256,13 @@ const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
       <View style={styles.section}>
         <Text style={styles.largeBoldSpaced}>ACKNOWLEDGEMENT</Text>
         <Text style={styles.textBlock}>
-          Success and final outcome of this project required a lot of guidance
-          and assistance from many people and I am extremely fortunate to have
-          got this all along the completion of my project work. Whatever I have
-          done is only due to such guidance and assistance and I would not
-          forget to thank them.
+          Success and final outcome of this{" "}
+          {subject.includes(" (Practical)") ? "practical work" : "project"}{" "}
+          required a lot of guidance and assistance from many people and I am
+          extremely fortunate to have got this all along the completion of my{" "}
+          {subject.includes(" (Practical)") ? "practical work" : "project work"}
+          . Whatever I have done is only due to such guidance and assistance and
+          I would not forget to thank them.
         </Text>
         <Text style={styles.textBlock}>
           First and foremost, I take this opportunity to express my gratitude to
@@ -248,7 +273,9 @@ const PDF = ({ studentName, grade, projectName, subject, teacher, year }) => (
           Section) for her valuable suggestions and support.
         </Text>
         <Text style={styles.textBlock}>
-          I am indebted to our project coordinator
+          I am indebted to our{" "}
+          {subject.includes(" (Practical)") ? "practical" : "project"}{" "}
+          coordinator
           {teacher.toLowerCase().includes("and") && "s"}{" "}
           <Text style={styles.textBold}>{teacher}</Text>, Secondary Level
           Section, for their timely guidance and support throughout this work.
