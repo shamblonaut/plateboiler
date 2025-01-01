@@ -20,12 +20,21 @@ function Form() {
     "Political Science",
   ];
 
+  const getCurrentAcademicYear = () => {
+    const currentDate = new Date();
+    if (currentDate.getMonth() <= 2) {
+      return currentDate.getFullYear();
+    } else {
+      return currentDate.getFullYear() + 1;
+    }
+  };
+
   const [student, setStudent] = useState("");
   const [grade, setGrade] = useState("XII");
   const [project, setProject] = useState("");
   const [subject, setSubject] = useState(subjectsList[0]);
   const [teacher, setTeacher] = useState("");
-  const [year, setYear] = useState("2025");
+  const [year, setYear] = useState(`${getCurrentAcademicYear()}`);
 
   const [projectNameEnabled, setProjectNameEnabled] = useState(true);
 
